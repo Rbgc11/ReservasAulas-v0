@@ -1,7 +1,5 @@
 package org.iesalandalus.programacion.reservasaulas.mvc.vista;
 
-import borradortarea5.Opcion;
-import borradortarea5.Vista;
 
 public enum Opcion {
 	//Opciones
