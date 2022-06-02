@@ -6,7 +6,7 @@ import org.iesalandalus.programacion.reservasaulas.mvc.modelo.dominio.Profesor;
 public class Profesores{
 	private int capacidad;
 	private int tamano;
-	 Profesor[] coleccionProfesores;
+	 private Profesor[] coleccionProfesores;
 
 	// Constructor con parámetros
 		public Profesores(int capacidadProfesores) {
@@ -25,9 +25,9 @@ public class Profesores{
 	    }
 	    
 		// Método copiaProfundaProfesores
-		private Profesor[] copiaProfundaProfesores()  {
+		private Profesor[] copiaProfundaProfesores() throws IllegalArgumentException, NullPointerException {
 			Profesor[] copiaProfesores = new Profesor[capacidad];
-			for(int i = 0; i < tamano; i++) {
+			for(int i = 0;!tamanoSuperado(i); i++) {
 				copiaProfesores[i] = new Profesor(coleccionProfesores[i]);
 			}
 			return copiaProfesores;
@@ -47,18 +47,20 @@ public class Profesores{
 		public void insertar(Profesor profesor) throws OperationNotSupportedException{
 	     
 		if (profesor == null) {
-			throw new IllegalArgumentException("No se puede insertar un profesor nulo.");
+			throw new NullPointerException("No se puede insertar un profesor nulo.");
 		}
 		int indice = buscarIndice(profesor);
-	        if (tamanoSuperado(indice)) {
-	            coleccionProfesores[indice] = profesor;
+		
+	    if (tamanoSuperado(indice)) {
+	            coleccionProfesores[indice] = new Profesor(profesor);
 	            tamano++;
 		} else {
 	            if (capacidadSuperada(indice)) {
 	            throw new OperationNotSupportedException("El Profesor ya existe.");
 		} else {
 			throw new OperationNotSupportedException("No se aceptan más Profesores.");
-		}		}
+		}		
+	    }
 	        
 	    }
 	    
@@ -84,23 +86,23 @@ public class Profesores{
 		}
 		
 	    //Método buscar
-	    public Profesor buscar(Profesor profesor) {
+	    public Profesor buscar(Profesor profesor) throws IllegalArgumentException, NullPointerException {
 	    	if (profesor == null) {
-	            throw new IllegalArgumentException("No se puede buscar un profesor nula.");
+	            throw new NullPointerException("No se puede buscar un profesor nula.");
 	            }
-	    	int indice = 0;
-	    	indice = buscarIndice(profesor);
+	    	int indice = buscarIndice(profesor);
 	    	if (tamanoSuperado(indice)) {
 	    			return null;
 	    	} else {
-	    			return coleccionProfesores[indice];
+				Profesor profesorEncontrado = new Profesor(coleccionProfesores[indice]);
+				return profesorEncontrado;
 	    	}
 		}
 	    
 	    //Método borrar
 	    public void borrar(Profesor profesor) throws OperationNotSupportedException {
 		if (profesor == null) {
-	            throw new IllegalArgumentException("No se puede borrar un profesor nula.");
+	            throw new NullPointerException("No se puede borrar un profesor nula.");
 	            }
 	            int indice = buscarIndice(profesor);
 	            if (!tamanoSuperado(indice)) {
@@ -113,7 +115,7 @@ public class Profesores{
 	    
 	    //Método desplazarunaposicionhaciaizquierda
 	    private void desplazarUnaPosicionHaciaIzquierda(int indice) {
-		for (int i = indice; i < tamano - 1; i++) {
+		for (int i = indice; !tamanoSuperado(i); i++) {
 	            coleccionProfesores[i] = coleccionProfesores[i+1];
 	            }
 	            coleccionProfesores[tamano] = null;
@@ -122,8 +124,12 @@ public class Profesores{
 		
 	    //Método representar
 		public String[] representar() {
+			if (tamano == 0)
+				throw new IllegalArgumentException("La lista de reservas está vacia.");
+			
 			String[] representacion = new String[tamano];
-			for (int i = 0; tamanoSuperado(i); i++) {
+			
+			for (int i = 0; !tamanoSuperado(i); i++) {
 				representacion[i] = coleccionProfesores[i].toString();
 			}
 			return representacion;

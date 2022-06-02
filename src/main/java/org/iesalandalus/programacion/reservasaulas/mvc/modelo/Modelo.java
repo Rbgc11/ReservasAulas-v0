@@ -22,12 +22,12 @@ package org.iesalandalus.programacion.reservasaulas.mvc.modelo;
 				reservas = new Reservas(CAPACIDAD);
 		    }
 		        
-		    public Aula[] getAulas(Aula aula){
+		    public Aula[] getAulas(){
 		        return aulas.get();
 		    }
 		    
 		    public int getNumAulas(){
-		        return aulas.getTamano();
+		        return getAulas().length;
 		    }
 		    
 		    public String[] representarAulas(){
@@ -46,12 +46,12 @@ package org.iesalandalus.programacion.reservasaulas.mvc.modelo;
 		        aulas.borrar(aula);
 		    }
 		    
-		    public Profesor[] getProfesores(Profesor profesor){
+		    public Profesor[] getProfesores(){
 		        return profesores.get();
 		    }
 		    
 		    public int getNumProfesores(){
-		        return profesores.getTamano();
+		        return  getProfesores().length;
 		    }
 		    
 		    public String[] representarProfesores(){
@@ -70,12 +70,12 @@ package org.iesalandalus.programacion.reservasaulas.mvc.modelo;
 		        profesores.borrar(profesor);
 		    }
 		    
-		    public Reserva[] getReservas(Reserva reserva){
+		    public Reserva[] getReservas(){
 		        return reservas.get();
 		    }
 		    
 		    public int getNumReservas(){
-		        return reservas.getTamano	();
+		        return getReservas().length;
 		    }
 		    
 		    public String[] representarReservas(){

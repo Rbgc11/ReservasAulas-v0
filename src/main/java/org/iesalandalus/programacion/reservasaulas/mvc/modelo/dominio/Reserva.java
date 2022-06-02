@@ -16,48 +16,50 @@ public class Reserva {
 
 	//Constructor copia
 	public Reserva(Reserva reserva)  {
-		if(reserva == null)
-			throw new IllegalArgumentException("No se puede copiar una reserva nula.");
+		if(reserva == null) {
+			throw new NullPointerException("No se puede copiar una reserva nula.");
+		} else {
 	       setProfesor(reserva.profesor);
 	       setAula(reserva.aula);
 	       setPermanencia(reserva.permanencia);
+		}
 	}
 
 	//Setter y Getters
-	private void setProfesor(Profesor profesor) throws IllegalArgumentException {
+	private void setProfesor(Profesor profesor)  {
 		if (profesor == null) {
-			throw new IllegalArgumentException("No pueden haber valores nulos");
+			throw new NullPointerException("No pueden haber valores nulos");
 		} else {
-			this.profesor = profesor;
+			this.profesor = new Profesor(profesor);
 		}
 	}
 
 	public Profesor getProfesor() {
-		return profesor;
+		return new Profesor(profesor);
 	}
 
-	private void setAula(Aula aula)  throws IllegalArgumentException {
+	private void setAula(Aula aula)  {
 		if (aula == null) {
-			throw new IllegalArgumentException("No pueden haber valores nulos");
+			throw new NullPointerException("No pueden haber valores nulos");
 		} else {
-			this.aula = aula;
+			this.aula = new Aula(aula.getNombre());;
 		}
 	}
 
 	public Aula getAula() {
-		return aula;
+		return new Aula(aula);
 	}
 
-	private void setPermanencia(Permanencia permanencia)  throws IllegalArgumentException {
+	private void setPermanencia(Permanencia permanencia) {
 		if (permanencia == null) {
-			throw new IllegalArgumentException("No pueden haber valores nulos");
+			throw new NullPointerException("No pueden haber valores nulos");
 		} else {
-			this.permanencia = permanencia;
+			this.permanencia = new Permanencia(permanencia.getDia(), permanencia.getTramo());
 		}
 	}
 
 	public Permanencia getPermanencia() {
-		return permanencia;
+		return new Permanencia(permanencia);
 	}
 
 
@@ -83,7 +85,7 @@ public class Reserva {
 
 	@Override
 	public String toString() {
-		return "Reserva [profesor=" + profesor + ", aula=" + aula + ", permanencia=" + permanencia + "]";
+		return "Profesor=" + getProfesor() + ", aula=" + getAula() + ", permanencia=" + getPermanencia() + "";
 	}
 
 	

@@ -113,7 +113,7 @@ public enum Opcion {
 
 	@Override
 	public String toString() {
-		return String.format("%d.- %s", ordinal());
+		return String.format("%d.- %s", ordinal() + 1, mensajeAmostrar);
 	}
 
 	//Método getOpcionSegunOrdinal

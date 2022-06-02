@@ -11,8 +11,8 @@ import org.iesalandalus.programacion.reservasaulas.mvc.vista.Vista;
 
 public class Controlador {
 
-	private Modelo modelo;
-	private Vista vista;
+	 Modelo modelo;
+	 Vista vista;
 
 	public Controlador(Modelo modelo, Vista vista) 
 	{

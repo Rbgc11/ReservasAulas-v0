@@ -14,7 +14,7 @@ public class Reservas {
  	//Constructor con parámetros
 	public Reservas(int capacidadReservas) {
 		if (capacidadReservas < 1) {
-			throw new IllegalArgumentException("ERROR: La capacidad debe ser mayor que cero.");
+			throw new IllegalArgumentException(" La capacidad debe ser mayor que cero.");
 		} else {
 			coleccionReservas = new Reserva[capacidadReservas];
 			this.capacidad = capacidadReservas;
@@ -29,7 +29,7 @@ public class Reservas {
 		// Método copiaProfundaReservas
 		private Reserva[] copiaProfundaReservas()  {
 			Reserva[] copiaReservas = new Reserva[capacidad];
-			for(int i = 0; i < tamano; i++) {
+			for(int i = 0; !tamanoSuperado(i); i++) {
 				copiaReservas[i] = new Reserva(coleccionReservas[i]);
 			}
 			return copiaReservas;
@@ -49,7 +49,7 @@ public class Reservas {
 		public void insertar(Reserva reserva) throws OperationNotSupportedException{
 	     
 			if (reserva == null) {
-				throw new IllegalArgumentException("No se puede insertar una reserva nula.");
+				throw new NullPointerException("No se puede insertar una reserva nula.");
 			}
 			int indice = buscarIndice(reserva);
 	        if (tamanoSuperado(indice)) {
@@ -86,23 +86,22 @@ public class Reservas {
 		}
 		
 	    //Método buscar
-	    public Reserva buscar(Reserva reserva) {
+	    public Reserva buscar(Reserva reserva) throws IllegalArgumentException, NullPointerException  {
 	    	if (reserva == null) {
-	            throw new IllegalArgumentException("No se puede buscar una reserva nula.");
+	            throw new NullPointerException("No se puede buscar una reserva nula.");
 	            }
-	    	int indice = 0;
-	    	indice = buscarIndice(reserva);
+	    	int indice = buscarIndice(reserva);
 	    	if (tamanoSuperado(indice)) {
 				return null;
 	    	} else {
-            	return coleccionReservas[indice];
+            	return new Reserva(coleccionReservas[indice]);
 	            }
 		}
 	    
 	    //Método borrar
 	    public void borrar(Reserva reserva) throws OperationNotSupportedException {
 	    	if (reserva == null) {
-	    		throw new IllegalArgumentException("No se puede borrar un Reserva nula.");
+	    		throw new NullPointerException ("No se puede borrar un Reserva nula.");
 	        }
 	        int indice = buscarIndice(reserva);
 	        if (!tamanoSuperado(indice)) {
@@ -124,10 +123,16 @@ public class Reservas {
 		
 	    //Método representar
 		public String[] representar() {
+			if (tamano == 0)
+				throw new IllegalArgumentException(" La lista de reservas está vacia.");
+			
 			String[] representacion = new String[tamano];
-			for (int i = 0; tamanoSuperado(i); i++) {
+			
+			for (int i = 0; !tamanoSuperado(i); i++) {
 				representacion[i] = coleccionReservas[i].toString();
 			}
+			
+		
 			return representacion;
 		}
 		
@@ -136,12 +141,12 @@ public class Reservas {
 
 	        if(profesor==null){
 
-	                throw new IllegalArgumentException("No se pueden comprobar las reservas de un profesor nulo.");
+	                throw new NullPointerException("No se pueden comprobar las reservas de un profesor nulo.");
 	        }
 
 	        Reserva[] reservaProfesor = new Reserva[capacidad];
 	        int indice = 0;
-	        for(int i = 0; i<tamano; i++) {
+	        for(int i = 0; !tamanoSuperado(i); i++) {
 	            if(coleccionReservas[i]!=null && coleccionReservas[i].getProfesor().equals(profesor)){
 	                reservaProfesor[indice] = new Reserva(coleccionReservas[i]);
 	                 indice++;
@@ -154,11 +159,11 @@ public class Reservas {
 	    //Get ReservasAula
 	    public Reserva[] getReservasAula(Aula aula){
 	        if(aula==null){
-	                throw new IllegalArgumentException("No se pueden comprobar las reservas de un profesor nulo.");
+	                throw new NullPointerException("No se pueden comprobar las reservas de un profesor nulo.");
 	        }
 	        Reserva[] reservaAula = new Reserva[capacidad];
 	        int indice = 0;
-	        for(int i = 0; i<tamano; i++) {
+	        for(int i = 0;!tamanoSuperado(i); i++) {
 	            if(coleccionReservas[i]!=null && coleccionReservas[i].getAula().equals(aula)){
 	                reservaAula[indice] = new Reserva(coleccionReservas[i]);
 	                 indice++;
@@ -171,11 +176,11 @@ public class Reservas {
 	    //Método getReservasPemanencia
 	    public Reserva[] getReservasPermanencia(Permanencia permanencia){
 	        if(permanencia==null){
-	                throw new IllegalArgumentException("No se pueden comprobar las reservas de un profesor nulo.");
+	                throw new NullPointerException("No se pueden comprobar las reservas de un profesor nulo.");
 	        }
 	        Reserva[] reservaPermanencia = new Reserva[capacidad];
 	        int indice = 0;
-	        for(int i = 0; i<tamano; i++) {
+	        for(int i = 0; !tamanoSuperado(i); i++) {
 	            if(coleccionReservas[i]!=null && coleccionReservas[i].getPermanencia().equals(permanencia)){
 	                reservaPermanencia[indice] = new Reserva(coleccionReservas[i]);
 	                 indice++;
@@ -191,17 +196,19 @@ public class Reservas {
 	     public boolean consultarDisponibilidad(Aula aula, Permanencia permanencia){
 	     
 	     	if(aula==null)
-	            throw new IllegalArgumentException("No se puede consultar la disponibilidad de un aula nula.");
+	            throw new NullPointerException("No se puede consultar la disponibilidad de un aula nula.");
 	     	if(permanencia==null)
-	            throw new IllegalArgumentException("No se puede consultar la disponibilidad de una permanencia nula.");
+	            throw new NullPointerException("No se puede consultar la disponibilidad de una permanencia nula.");
 		
-	        for(int i = 0; i<tamano; i++) {
-	            
-	            if(coleccionReservas[i].getAula().equals(aula) && coleccionReservas[i].getPermanencia().equals(permanencia))
-	            	return false;
-		}
-		
-	        return true;
+	     	Reserva[] reservas = getReservasAula(aula);
+			for (Reserva reserva : reservas) {
+				if (reserva != null) {
+					if (reserva.getPermanencia().equals(permanencia)) {
+						return false;
+					}
+				}
+			}
+			return true;
 		
 	     }
 	     

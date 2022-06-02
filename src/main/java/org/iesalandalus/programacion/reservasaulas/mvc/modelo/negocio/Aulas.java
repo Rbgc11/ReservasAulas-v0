@@ -7,10 +7,10 @@ import org.iesalandalus.programacion.reservasaulas.mvc.modelo.dominio.Aula;
 public class Aulas{
 	private int capacidad;
 	private int tamano;
-	 Aula[] coleccionAulas;
+	 private Aula[] coleccionAulas;
 
 		// Constructor
-		public Aulas(int capacidadAulas) {
+		public Aulas(int capacidadAulas) throws IllegalArgumentException, NullPointerException {
 			if (capacidadAulas < 1) {
 				throw new IllegalArgumentException(" La capacidad tiene que ser mayor que cero.");
 			}  
@@ -26,9 +26,9 @@ public class Aulas{
 	    }
 	    
 		// Método copiaProfundaAulas
-		private Aula[] copiaProfundaAulas()  {
-			Aula[] copiaProAulas = new Aula [capacidad];
-			for(int i = 0; i < tamano; i++) {
+		private Aula[] copiaProfundaAulas()  throws IllegalArgumentException, NullPointerException {
+			Aula[] copiaProAulas = new Aula [tamano];
+			for(int i = 0; !tamanoSuperado(i); i++) {
 				copiaProAulas[i] = new Aula(coleccionAulas[i]);
 			}
 			return copiaProAulas;
@@ -48,13 +48,13 @@ public class Aulas{
 		public void insertar(Aula aula) throws OperationNotSupportedException{
 	     
 			if (aula == null) {
-				throw new IllegalArgumentException("No se puede insertar un aula nula.");
+				throw new NullPointerException("No se puede insertar un aula nula.");
 			}
 			int indice = buscarIndice(aula);
 		
 			if (tamanoSuperado(indice)) {
 	            coleccionAulas[indice] = new Aula(aula);
-	            tamano++;
+	            this.tamano++;
 			} else {
 	            if (capacidadSuperada(indice)) {
 	            throw new OperationNotSupportedException("El aula ya existe.");
@@ -90,19 +90,19 @@ public class Aulas{
 	    	if (aula == null) {
 	    		throw new NullPointerException(" No se puede buscar un aula nula.");
 	    	}
-	    	int indice = 0;
-	    	indice = buscarIndice(aula);
+	    	int indice = buscarIndice(aula);
 	    	if (tamanoSuperado(indice)) {
 	    		return null;
 	    	} else {
-	            return coleccionAulas[indice];
+				Aula aulaBuscado = new Aula(coleccionAulas[indice]);
+	            return aulaBuscado;
 	    	}
 		}
 	    
 	    //Método borrar 
 	    public void borrar(Aula aula) throws OperationNotSupportedException {
 	    	if (aula == null) {
-	            throw new IllegalArgumentException("No se puede borrar un aula nula.");
+	            throw new NullPointerException("No se puede borrar un aula nula.");
 	            }
 	            int indice = buscarIndice(aula);
 	            if (!tamanoSuperado(indice)) {
@@ -115,17 +115,21 @@ public class Aulas{
 	     
 	    //Método desplazarunaposicionhaciaizquierda
 	    private void desplazarUnaPosicionHaciaIzquierda(int indice) {
-	    	for (int i = indice; i < tamano - 1; i++) {
+	    	for (int i = indice; !tamanoSuperado(i); i++) {
 	            coleccionAulas[i] = coleccionAulas[i+1];
 	            }
-	            coleccionAulas[tamano] = null;
+	            coleccionAulas[indice] = null;
 	            tamano--;
 		}
 		
 	    //Método representar
 		public String[] representar() {
+			if (tamano == 0)
+				throw new IllegalArgumentException(" La lista de reservas está vacia.");
+			
 			String[] representacion = new String[tamano];
-			for (int i = 0; tamanoSuperado(i); i++) {
+			
+			for (int i = 0; !tamanoSuperado(i); i++) {
 				representacion[i] = coleccionAulas[i].toString();
 			}
 			return representacion;

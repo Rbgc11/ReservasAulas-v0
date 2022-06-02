@@ -11,7 +11,7 @@ public class Vista {
    	private static final String ERROR = "ERROR: ---- ";
     private static final String NOMBRE_VALIDO= "Nombre válido";
 	private static final String CORREO_VALIDO="Correo válido";
-	Controlador controlador;
+	private Controlador controlador;
 
 	public Vista() {
 		Opcion.setVista(this);
@@ -55,7 +55,7 @@ public class Vista {
 		try {
 			controlador.borrarAula(Consola.leerAula());
 			System.out.println("Aula borrada correctamente.");
-		} catch (OperationNotSupportedException|IllegalArgumentException e) {
+		} catch (OperationNotSupportedException|IllegalArgumentException | NullPointerException e) {
 			System.out.println(ERROR + e.getMessage());
 		}
 	}
@@ -63,15 +63,15 @@ public class Vista {
 	//Método buscarAula
 	public void buscarAula() {
 		Consola.mostrarCabecera("Buscar aula");
-		Aula aula = null;
+		Aula aula;
 		try {
 			aula = controlador.buscarAula( Consola.leerAula());
 			if (aula != null) {
-				System.out.println("El aula buscada es: " + aula);
+				System.out.println("El aula buscada es: " + aula.toString());
 			} else {
 				System.out.println("No existe ninguna aula con dicho nombre.");
 			}
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException | NullPointerException e){
 			System.out.println(ERROR + e.getMessage());
 		}
 	}
@@ -80,7 +80,7 @@ public class Vista {
 	public void listarAulas() {
 		Consola.mostrarCabecera("Listar aulas");
 		String[]aulas = controlador.representarAulas();
-		if (aulas.length > 0) {
+		if (aulas.length != 0) {
 			for (String aula : aulas) {
 				System.out.println(aula);
 			}
@@ -133,7 +133,7 @@ public class Vista {
                         } else {
                             System.out.println("El profesor buscado es: " + profesor);
                         }
-		} catch (IllegalArgumentException e) {
+		} catch  (IllegalArgumentException | NullPointerException e) {
 			System.out.println(ERROR + e.getMessage());
 		
                 
@@ -144,7 +144,7 @@ public class Vista {
 	public void listarProfesores() {
 		Consola.mostrarCabecera("Listar profesores");
 		String[]listaprofesores = controlador.representarProfesores();
-		if (listaprofesores.length > 0) {
+		if (listaprofesores.length != 0) {
 			for (String profesor : listaprofesores) {
 				System.out.println(profesor);
 			}
@@ -167,6 +167,9 @@ public class Vista {
         
        //Método leerReserva
         private Reserva leerReserva(Profesor profesor){
+        	
+    		if (profesor == null)
+    			throw new NullPointerException(ERROR);
             
             Aula aula = Consola.leerAula();
             Permanencia permanencia = new Permanencia(Consola.leerDia(), Consola.leerTramo());
@@ -193,7 +196,7 @@ public class Vista {
 	public void listarReservas() {
 		Consola.mostrarCabecera("Listar reservas");
 		String[]reservas = controlador.representarReservas();
-		if (reservas.length > 0) {
+		if (reservas.length != 0) {
 			for (String reserva : reservas) {
 				System.out.println(reserva);
 			}
@@ -207,7 +210,7 @@ public class Vista {
 		Consola.mostrarCabecera("Listar reservas aula");
 		
 		Reserva[]listaReservasAula = controlador.getReservasAula(Consola.leerAula());
-		if (listaReservasAula.length > 0) {
+		if (listaReservasAula.length != 0) {
 			for (Reserva reserva : listaReservasAula) {
                             if(reserva!=null){
                             System.out.println(reserva);
@@ -225,7 +228,7 @@ public class Vista {
             Profesor profesor = new Profesor(Consola.leerNombreProfesor(),CORREO_VALIDO);
                
             Reserva[]reservasProfesor = controlador.getReservasProfesor(profesor);
-            if (reservasProfesor.length > 0) {
+            if (reservasProfesor.length != 0) {
                     for (Reserva reserva : reservasProfesor) {
                         if(reserva!=null){
                             System.out.println(reserva);
@@ -245,7 +248,7 @@ public class Vista {
         Permanencia permanenciaReserva=new Permanencia(Consola.leerDia(),Consola.leerTramo());
 		Reserva[] reservasPermanencia = controlador.getReservasPermanencia(permanenciaReserva);
                 
-		if (reservasPermanencia.length > 0) {
+		if (reservasPermanencia.length != 0) {
 			for (Reserva reserva : reservasPermanencia) {
                             if(reserva!=null){
      

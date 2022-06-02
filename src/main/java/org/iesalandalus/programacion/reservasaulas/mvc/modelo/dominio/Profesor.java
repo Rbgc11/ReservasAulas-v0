@@ -23,38 +23,41 @@ public class Profesor { //Atributos
     //Constructor Copia
     public Profesor (Profesor profesor) {
         if (profesor == null) {
-			throw new IllegalArgumentException("No se puede copiar un profesor nulo.");
+			throw new NullPointerException("No se puede copiar un profesor nulo.");
 		}
-		setNombre(profesor.nombre);
-		setTelefono(profesor.telefono);
-		setCorreo(profesor.correo);
+		setNombre(profesor.getNombre());
+		setTelefono(profesor.getTelefono());
+		setCorreo(profesor.getCorreo());
 	}
+    
     //Set y Get de los atributos
-    private void setNombre(String nombre)  throws IllegalArgumentException {        
+    private void setNombre(String nombre) {        
         if(nombre==null){       
-            throw new IllegalArgumentException("El nombre del profesor no puede ser nulo.");
+            throw new NullPointerException("El nombre del profesor no puede ser nulo.");
         }
-        
-        if(nombre.equals("")){        
+        else if(nombre.trim() == ""){        
             throw new IllegalArgumentException("El nombre del profesor no puede estar vacío.");       
         }
             this.nombre=nombre;
     }
     
     
-    public void setCorreo(String correo) throws IllegalArgumentException {       
+    public void setCorreo(String correo) {       
         if(correo==null){
-            throw new IllegalArgumentException("El correo del profesor no puede ser nulo.");      
+            throw new NullPointerException("El correo del profesor no puede ser nulo.");      
         }
-        if(!correo.matches(ER_CORREO)){        
+        if(correo.trim() == "" || !correo.matches(ER_CORREO)){        
             throw new IllegalArgumentException("El correo del profesor no es válido.");         
         }
             this.correo=correo;        
     }
     
     
-	public void setTelefono(String telefono) throws IllegalArgumentException {
-		  if (!telefono.matches(ER_TELEFONO)) {
+	public void setTelefono(String telefono){
+		if (telefono == null) {
+			this.telefono = null;
+		} 
+		else if (telefono.trim() == "" || !telefono.matches(ER_TELEFONO)) {
 		      throw new IllegalArgumentException("El teléfono del profesor no es válido.");
 		    }
 
@@ -98,9 +101,10 @@ public class Profesor { //Atributos
 	public String toString() {
 		if(telefono == null) {
 			return "nombre=" + nombre + ", correo=" + correo ;
-		}
+		} else {
 		
 		return "nombre=" + nombre + ", correo=" + correo + ", telefono=" + telefono;
+		}
 	}
 }
 

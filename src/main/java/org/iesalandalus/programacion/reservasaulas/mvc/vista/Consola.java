@@ -3,6 +3,8 @@
 import  org.iesalandalus.programacion.utilidades.Entrada;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 import org.iesalandalus.programacion.reservasaulas.mvc.modelo.dominio.Aula;
 import org.iesalandalus.programacion.reservasaulas.mvc.modelo.dominio.Profesor;
 import org.iesalandalus.programacion.reservasaulas.mvc.modelo.dominio.Tramo;
@@ -37,7 +39,7 @@ public class Consola {
 	                
 	            do {
 	                    System.out.print("Escoge una opción: ");
-	                    ordinalOpcion = Entrada.entero();
+	                    ordinalOpcion = Entrada.entero() - 1;
 	            } while (!Opcion.esOrdinalValido(ordinalOpcion));
 	         return ordinalOpcion;
 	    }
